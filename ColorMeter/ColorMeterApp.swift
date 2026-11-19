@@ -36,6 +36,7 @@ final class Controller {
     private(set) var mode: Mode = .idle
     let sampler: Sampler
     @ObservationIgnored private let panel: ReadoutPanel
+    @ObservationIgnored private let square = CursorSquare()
     @ObservationIgnored private var hotKey: HotKey?
     @ObservationIgnored private var clickMonitor: Any?
 
@@ -43,8 +44,8 @@ final class Controller {
         let sampler = Sampler()
         self.sampler = sampler
         panel = ReadoutPanel(sampler: sampler)
-        sampler.excludedWindowIDs = [panel.windowID]
-        sampler.onTick = { [panel] in panel.move(to: $0) }
+        sampler.excludedWindowIDs = [panel.windowID, square.windowID]
+        sampler.onTick = { [panel, square] in panel.move(to: $0.origin); square.move(to: $0) }
         hotKey = HotKey { [weak self] in self?.cycle() }
     }
 
@@ -61,6 +62,7 @@ final class Controller {
         mode = .live
         panel.move(to: NSEvent.mouseLocation)
         panel.show()
+        square.show()
     }
 
     private func freeze() {
@@ -80,6 +82,7 @@ final class Controller {
         clickMonitor = nil
         sampler.stop()
         panel.hide()
+        square.hide()
         mode = .idle
     }
 }

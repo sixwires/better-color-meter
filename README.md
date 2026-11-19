@@ -3,7 +3,7 @@
 A simpler Digital Color Meter for macOS. Menu bar app. Press **⌃⌥⌘C**, hover anything, read the color as
 HEX, RGB, HSL, HSB and OKLCH at once. Click a row to copy it.
 
-- **⌃⌥⌘C** cycles: hidden → **live** (panel follows cursor) → **frozen** (HEX copied) → hidden.
+- **⌃⌥⌘C** cycles: hidden → **live** (panel follows cursor, a small square outlines the sampled pixel) → **frozen** (HEX copied) → hidden.
   Clicking anywhere else while frozen also hides it.
 - Menu bar icon: same action, plus **Color Space** (sRGB default, or Display P3) and Quit.
 - Sandboxed, no network, no data collected. Needs **Screen Recording** permission (that is how macOS lets
@@ -63,6 +63,7 @@ ColorMeter/
   ColorMeterApp.swift       @main, MenuBarExtra, Controller state machine
   Sampler.swift             ScreenCaptureKit pixel polling + permission flow
   ReadoutPanel.swift        Floating NSPanel + SwiftUI readout rows
+  CursorSquare.swift        Click-through overlay outlining the sampled pixel
   HotKey.swift              Carbon global hotkey ⌃⌥⌘C
   ColorFormats.swift        RGB → HEX / RGB / HSL / HSB / OKLCH (sRGB and Display P3)
 ColorMeterTests/            Color math tests (Swift Testing)

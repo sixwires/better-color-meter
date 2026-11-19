@@ -12,7 +12,8 @@ final class Sampler {
     }
     /// Our own windows, so hovering the readout panel doesn't sample itself.
     @ObservationIgnored var excludedWindowIDs: [CGWindowID] = []
-    @ObservationIgnored var onTick: ((CGPoint) -> Void)?
+    /// Called each tick with the sampled area in global (bottom-left origin) coordinates.
+    @ObservationIgnored var onTick: ((CGRect) -> Void)?
 
     @ObservationIgnored private var timer: Timer?
     @ObservationIgnored private var content: SCShareableContent?
@@ -51,10 +52,10 @@ final class Sampler {
         guard let screen = NSScreen.screens.first(where: { $0.frame.contains(point) }),
               let displayID = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID,
               let display = content.displays.first(where: { $0.displayID == displayID }) else { return }
-        onTick?(point)
 
         // Global coords are bottom-left origin; SCK sourceRect is display-local, top-left origin.
         let rect = CGRect(x: floor(point.x - screen.frame.minX), y: floor(screen.frame.maxY - point.y), width: 1, height: 1)
+        onTick?(CGRect(x: rect.minX + screen.frame.minX, y: screen.frame.maxY - rect.maxY, width: rect.width, height: rect.height))
         let scale = Int(screen.backingScaleFactor)
         let config = SCStreamConfiguration()
         config.sourceRect = rect
