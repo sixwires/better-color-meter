@@ -1,0 +1,44 @@
+name: ColorMeter
+options:
+  bundleIdPrefix: com.sixwires
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    # Set to your Team ID after Apple Developer Program enrollment.
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+targets:
+  ColorMeter:
+    type: application
+    platform: macOS
+    sources:
+      - ColorMeter
+    entitlements:
+      path: ColorMeter/ColorMeter.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+    info:
+      path: ColorMeter/Info.plist
+      properties:
+        CFBundleDisplayName: ColorMeter
+        LSUIElement: true
+        LSApplicationCategoryType: public.app-category.developer-tools
+        ITSAppUsesNonExemptEncryption: false
+        NSHumanReadableCopyright: ""
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.sixwires.ColorMeter
+        ENABLE_HARDENED_RUNTIME: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        COMBINE_HIDPI_IMAGES: YES
+  ColorMeterTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - ColorMeterTests
+      - ColorMeter/ColorFormats.swift
